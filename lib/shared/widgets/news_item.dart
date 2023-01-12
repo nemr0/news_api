@@ -7,7 +7,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../lorem_test.dart';
 import 'error_dialog.dart';
-import 'error_display.dart';
 
 class NewsItem extends StatelessWidget {
   const NewsItem(
@@ -91,22 +90,25 @@ class NewsItem extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20)),
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        filterQuality: FilterQuality.high,
-                        imageUrl: imageUrl ?? tImageURL,
-                        imageBuilder: (context, image) => Opacity(
-                            opacity: .6,
-                            child: Image(
-                              image: image,
+                      child: imageUrl == null
+                          ? const ErrorImage()
+                          : CachedNetworkImage(
+                              fit: BoxFit.cover,
                               filterQuality: FilterQuality.high,
-                            )),
-                        progressIndicatorBuilder:
-                            (context, s, downloadProgress) {
-                          return const CupertinoActivityIndicator();
-                        },
-                        errorWidget: (context, s, error) => ErrorImage(),
-                      ),
+                              imageUrl: imageUrl ?? tImageURL,
+                              imageBuilder: (context, image) => Opacity(
+                                  opacity: .6,
+                                  child: Image(
+                                    image: image,
+                                    filterQuality: FilterQuality.high,
+                                  )),
+                              progressIndicatorBuilder:
+                                  (context, s, downloadProgress) {
+                                return const CupertinoActivityIndicator();
+                              },
+                              errorWidget: (context, s, error) =>
+                                  const ErrorImage(),
+                            ),
                     ),
 
                     // ExpansionPanelList(

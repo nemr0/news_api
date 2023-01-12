@@ -4,10 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:news_api/shared/cubits/brightness_cubit/brightness_cubit.dart';
+import 'package:news_api/shared/cubits/news_cubit/news_cubit.dart';
 
 import 'custom_bloc_observer.dart';
 import 'layout/home_layout.dart';
 
+// import'';
 Future<void> main() async => {
       await GetStorage.init(),
 // changing bloc observer to a custom one in ./custom_bloc_observer.dart
@@ -22,24 +24,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Using [CupertinoApp] instead of [MaterialApp] to Implement
     /// iOS Design Pattern (Cupertino)
-    return BlocProvider<ConfigurationCubit>(
-      create: (context) => ConfigurationCubit()..initiate(),
-      child: BlocBuilder<ConfigurationCubit, CupertinoThemeData>(
-        builder: (context, state) {
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ConfigurationCubit()..initiate(),
+          ),
+          BlocProvider(create: (context) => NewsCubit()..getData()),
+        ],
+        child: BlocBuilder<ConfigurationCubit, CupertinoThemeData>(
+            builder: (context, state) {
           // BrightnessCubit.get(context)
           //     .setTheme(state.brightness == Brightness.dark ? true : false);
           // debugPrint(
           // 'is Dark Theme Enabled:${GetStorage().read('isDark').toString()}');
           return CupertinoApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-
-            theme: state,
-            // Main Page
-            home: const HomeLayout(title: 'News API with BLoC'),
-          );
-        },
-      ),
-    );
+              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              theme: state,
+              // Main Page
+              home: const HomeLayout(title: 'News API with BLoC'));
+        }));
   }
 }
