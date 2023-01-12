@@ -77,7 +77,7 @@ class HomeLayout extends StatelessWidget {
                         icon: Icon(CupertinoIcons.settings), label: 'Settings'),
                   ],
                   onTap: (newIndex) {
-                    News news = News.values[newIndex];
+                    NewsType news = NewsType.values[newIndex];
                     NewsCubit.get(context).getData(news: news);
 
                     context.read<HomeNavCubit>().setIndex(newIndex);

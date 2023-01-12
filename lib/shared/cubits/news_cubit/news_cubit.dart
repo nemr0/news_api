@@ -8,81 +8,91 @@ import '../../news_enum.dart';
 
 part 'news_state.dart';
 
+/// Cubit that handles all news pages states [BusinessScreen],[SportsScreen] and
+/// [ScienceScreen]
 class NewsCubit extends Cubit<NewsState> {
   NewsCubit() : super(NewsInitial());
+
+  /// Get Instance of this cubit using context
   static NewsCubit get(BuildContext context) =>
       BlocProvider.of<NewsCubit>(context);
-  bool initiate(News news) {
+
+  /// allow showing saved data if exists
+  bool isSaved(NewsType news) {
+    /// instance of saved data
     List? saved;
-    switch (news) {
-      case News.business:
-        saved = GetStorage().read(News.business.name);
-        if (saved == null) {
-          return false;
-        } else {
+    saved = GetStorage().read(news.name);
+    if (saved == null) {
+      return false;
+    } else {
+      switch (news) {
+        case NewsType.business:
           _businessData = saved;
           emit(BusinessGetSuccessState(_businessData));
-          return true;
-        }
-      case News.sports:
-        saved = GetStorage().read(News.sports.name);
-        if (saved == null) {
-          return false;
-        } else {
+          break;
+        case NewsType.sports:
           _sportsData = saved;
-          emit(BusinessGetSuccessState(_businessData));
-          return true;
-        }
-      case News.science:
-        saved = GetStorage().read(News.science.name);
-        if (saved == null) {
-          return false;
-        } else {
+          emit(SportsGetSuccessState(_sportsData));
+          break;
+        case NewsType.science:
           _scienceData = saved;
-          emit(BusinessGetSuccessState(_businessData));
-          return true;
-        }
+          emit(ScienceGetSuccessState(_scienceData));
+          break;
+      }
+      getData(isRefresh: true, news: news);
+      return true;
     }
   }
 
+  /// The List which holds [BusinessScreen] data
   List? _businessData = [];
+
+  /// The List which holds [SportsScreen] data
 
   List? _sportsData = [];
 
+  /// The List which holds [ScienceScreen] data
+
   List? _scienceData = [];
 
+  /// Gets data for any screen
   Future<void> getData(
-      {bool isRefresh = false, News news = News.business}) async {
+      {
+
+      ///checking if onRefresh event
+      bool isRefresh = false,
+      NewsType news = NewsType.business}) async {
+    /// load saved in memory or in get_storage if it is not an onRefresh event
     if (isRefresh == false) {
-      bool saveLoaded = initiate(news);
-      if (saveLoaded) {
-        await getData(isRefresh: true, news: news);
-        return;
-      }
       switch (news) {
-        case News.business:
+        case NewsType.business:
           if (_businessData!.isNotEmpty) {
             emit(BusinessGetSuccessState(_businessData));
             return;
           }
+          if (isSaved(news)) return;
           emit(BusinessGetLoadingState());
           break;
 
-        case News.sports:
+        case NewsType.sports:
           if (_sportsData!.isNotEmpty) {
             emit(SportsGetSuccessState(_sportsData));
 
             return;
           }
+          if (isSaved(news)) return;
+
           emit(SportsGetLoadingState());
           break;
 
-        case News.science:
+        case NewsType.science:
           if (_scienceData!.isNotEmpty) {
             emit(ScienceGetSuccessState(_scienceData));
 
             return;
           }
+          if (isSaved(news)) return;
+
           emit(ScienceGetLoadingState());
 
           break;
@@ -93,36 +103,38 @@ class NewsCubit extends Cubit<NewsState> {
         .then((Response<Map> value) {
       List? articles = value.data!['articles'];
       switch (news) {
-        case News.business:
+        case NewsType.business:
           _businessData = articles;
-          GetStorage().write(News.business.name, articles);
           emit(BusinessGetSuccessState(articles));
+          GetStorage().write(NewsType.business.name, articles);
+
           break;
 
-        case News.sports:
+        case NewsType.sports:
           _sportsData = articles;
-          GetStorage().write(News.sports.name, articles);
           emit(SportsGetSuccessState(articles));
+          GetStorage().write(NewsType.sports.name, articles);
+
           break;
 
-        case News.science:
+        case NewsType.science:
           _scienceData = articles;
-          GetStorage().write(News.science.name, articles);
           emit(ScienceGetSuccessState(articles));
+          GetStorage().write(NewsType.science.name, articles);
 
           break;
       }
     }).onError((error, stackTrace) {
       switch (news) {
-        case News.business:
+        case NewsType.business:
           emit(BusinessGetFailedState(error.toString()));
           break;
 
-        case News.sports:
+        case NewsType.sports:
           emit(SportsGetFailedState(error.toString()));
           break;
 
-        case News.science:
+        case NewsType.science:
           emit(ScienceGetFailedState(error.toString()));
 
           break;

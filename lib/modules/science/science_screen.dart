@@ -19,7 +19,7 @@ class ScienceScreen extends StatelessWidget {
           final List? data = state.data;
           return NewsBody(
             data,
-            news: News.science,
+            news: NewsType.science,
           );
         } else if (state is ScienceGetFailedState) {
           return ErrorDisplay(error: state.error);

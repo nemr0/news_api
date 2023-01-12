@@ -19,7 +19,7 @@ class SportsScreen extends StatelessWidget {
           final List? data = state.data;
           return NewsBody(
             data,
-            news: News.sports,
+            news: NewsType.sports,
           );
         } else if (state is SportsGetFailedState) {
           return ErrorDisplay(error: state.error);

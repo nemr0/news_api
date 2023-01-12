@@ -9,10 +9,10 @@ class NewsBody extends HookWidget {
   const NewsBody(
     this.data, {
     Key? key,
-    this.news = News.business,
+    this.news = NewsType.business,
   }) : super(key: key);
   final List? data;
-  final News news;
+  final NewsType news;
 
   @override
   Widget build(BuildContext context) {
