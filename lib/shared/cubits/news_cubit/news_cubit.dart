@@ -39,6 +39,8 @@ class NewsCubit extends Cubit<NewsState> {
           emit(ScienceGetSuccessState(_scienceData));
           break;
       }
+
+      /// gets data in background
       getData(isRefresh: true, news: news);
       return true;
     }
@@ -48,11 +50,9 @@ class NewsCubit extends Cubit<NewsState> {
   List? _businessData = [];
 
   /// The List which holds [SportsScreen] data
-
   List? _sportsData = [];
 
   /// The List which holds [ScienceScreen] data
-
   List? _scienceData = [];
 
   /// Gets data for any screen

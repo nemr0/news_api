@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_api/shared/cubits/brightness_cubit/brightness_cubit.dart';
 
+/// Glass Morphism Effect for news images
 class GlassMorphism extends StatelessWidget {
   final double blur;
   final double opacity;

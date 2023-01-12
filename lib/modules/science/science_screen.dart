@@ -6,6 +6,7 @@ import 'package:news_api/shared/widgets/error_display.dart';
 import '../../shared/news_enum.dart';
 import '../../shared/widgets/news_body.dart';
 
+/// Science Screen
 class ScienceScreen extends StatelessWidget {
   const ScienceScreen({
     Key? key,
@@ -13,17 +14,25 @@ class ScienceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Building upon [NewsCubit] changes
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
+        /// if data is available
         if (state is ScienceGetSuccessState) {
           final List? data = state.data;
           return NewsBody(
             data,
             news: NewsType.science,
           );
-        } else if (state is ScienceGetFailedState) {
+        }
+
+        /// if getting data failed
+        else if (state is ScienceGetFailedState) {
           return ErrorDisplay(error: state.error);
-        } else {
+        }
+
+        /// if data is loading
+        else {
           return const CupertinoActivityIndicator();
         }
       },

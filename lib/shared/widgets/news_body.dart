@@ -5,17 +5,23 @@ import '../cubits/news_cubit/news_cubit.dart';
 import '../news_enum.dart';
 import 'news_item.dart';
 
+/// News Body for all categories
 class NewsBody extends HookWidget {
   const NewsBody(
     this.data, {
     Key? key,
     this.news = NewsType.business,
   }) : super(key: key);
+
+  /// given data
   final List? data;
+
+  /// category
   final NewsType news;
 
   @override
   Widget build(BuildContext context) {
+    /// scroll controller for scrollbar and scrollview
     final scrollController = useScrollController();
     return CupertinoScrollbar(
       controller: scrollController,
@@ -26,10 +32,13 @@ class NewsBody extends HookWidget {
           shrinkWrap: true,
           // controller: scrollController,
           slivers: [
+            /// refresh indicator
             CupertinoSliverRefreshControl(
               onRefresh: () async => await NewsCubit.get(context)
                   .getData(isRefresh: true, news: news),
             ),
+
+            /// showing data
             SliverList(
               delegate: SliverChildBuilderDelegate(
                   (context, index) => NewsItem(

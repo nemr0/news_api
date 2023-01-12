@@ -5,6 +5,7 @@ import 'package:news_api/shared/widgets/error_display.dart';
 
 import '../../shared/widgets/news_body.dart';
 
+///Business Screen
 class BusinessScreen extends StatelessWidget {
   const BusinessScreen({
     Key? key,
@@ -12,14 +13,22 @@ class BusinessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Building upon NewsCubit changes
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
+        /// if data is available
         if (state is BusinessGetSuccessState) {
           final List? data = state.data;
           return NewsBody(data);
-        } else if (state is BusinessGetFailedState) {
+        }
+
+        /// if getting data failed
+        else if (state is BusinessGetFailedState) {
           return ErrorDisplay(error: state.error);
-        } else {
+        }
+
+        /// if data is loading
+        else {
           return const CupertinoActivityIndicator();
         }
       },

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
+/// shows an error dialog with error msg
 showErrorCupertinoDialog(BuildContext context, {required String? error}) {
   showCupertinoDialog(
       context: context,

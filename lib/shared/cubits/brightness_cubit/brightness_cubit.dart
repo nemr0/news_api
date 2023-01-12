@@ -9,6 +9,9 @@ class ConfigurationCubit extends Cubit<CupertinoThemeData> {
   /// Getting Current bool
   @override
   CupertinoThemeData get state => super.state;
+
+  /// on create
+  /// gets saved theme.
   void initiate() {
     bool? isDark = GetStorage().read('isDark');
     debugPrint('isDark:$isDark');
@@ -19,6 +22,7 @@ class ConfigurationCubit extends Cubit<CupertinoThemeData> {
     }
   }
 
+  /// sets a new theme and saves it to get_storage
   Future<bool> setTheme(bool isDark) async {
     try {
       await GetStorage().write('isDark', isDark);
@@ -28,21 +32,6 @@ class ConfigurationCubit extends Cubit<CupertinoThemeData> {
       return false;
     }
   }
-  // getTheme() => emit(GetStorage().read('theme') ?? darkCupertinoTheme);
-  // setTheme(bool isDark) async => isDark
-  //     ? {
-  //         emit(darkCupertinoTheme.val('theme').defaultValue),
-  //         await GetStorage().write('isDark', true)
-  //       }
-  //     : {
-  //         emit(lightCupertinoTheme.val('theme').defaultValue),
-  //         // await GetStorage().write('isDark', false),
-  //       };
-  // @override
-  // void onChange(Change<CupertinoThemeData> change) {
-  //   setTheme(state.brightness == Brightness.dark ? true : false);
-  //   super.onChange(change);
-  // }
 
   /// Get Instance of this cubit using context
   static ConfigurationCubit get(BuildContext context) =>

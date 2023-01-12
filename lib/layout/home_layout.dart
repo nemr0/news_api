@@ -15,13 +15,16 @@ import '../shared/triggers/on_my_profile.dart';
 /// contains: Cupertino Navigation Bar(Usually AppBar in MaterialApp),
 /// CupertinoTabBar(Usually BottomNavigationBar in MaterialApp)
 class HomeLayout extends HookWidget {
-  const HomeLayout({super.key, required this.title});
-
-  final String title;
+  const HomeLayout({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    /// Size of current context
     final Size size = MediaQuery.of(context).size;
+
+    /// labels for appbar
     const List<String> kLabels = [
       'Business',
       'Sports',
@@ -29,16 +32,20 @@ class HomeLayout extends HookWidget {
       'Settings',
     ];
 
+    /// Screens
     final List<Widget> screens = [
       const BusinessScreen(),
       const SportsScreen(),
       const ScienceScreen(),
       const SettingsScreen(),
     ];
+
+    /// index notifier for navigation
     final index = useState<int>(0);
     // Providing Navigation index BLoC
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
+        /// the (i) icon pushing my linktree
         leading: const CupertinoButton(
           onPressed: launchMyProfile,
           child: Icon(
@@ -46,14 +53,15 @@ class HomeLayout extends HookWidget {
             size: 22,
           ),
         ),
+
+        /// label
         middle: Text(
           kLabels[index.value],
         ),
       ),
+
+      /// bottom navigation substitute for cupertino
       child: CupertinoTabScaffold(
-        // appBar: AppBar(
-        //   title: Text(title),
-        // ),
         tabBar: CupertinoTabBar(
           currentIndex: index.value,
           height: size.height * .07,
@@ -76,8 +84,10 @@ class HomeLayout extends HookWidget {
           },
         ),
         tabBuilder: (BuildContext context, int index) {
+          /// body itself
           return CupertinoTabView(builder: (BuildContext context) {
             return Stack(children: [
+              ///background image using flutter_svg
               SvgPicture.asset('assets/${kLabels[index].toLowerCase()}.svg',
                   height: size.height,
                   width: size.width,
@@ -88,6 +98,8 @@ class HomeLayout extends HookWidget {
                       : CupertinoColors.inactiveGray.withOpacity(.1)
                   // color: kCupertinoModalBarrierColor,
                   ),
+
+              /// Screens itself
               SizedBox(
                   height: double.infinity,
                   width: double.infinity,

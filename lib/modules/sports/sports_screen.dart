@@ -6,6 +6,7 @@ import 'package:news_api/shared/widgets/error_display.dart';
 import '../../shared/news_enum.dart';
 import '../../shared/widgets/news_body.dart';
 
+/// Sports Screen
 class SportsScreen extends StatelessWidget {
   const SportsScreen({
     Key? key,
@@ -13,17 +14,25 @@ class SportsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /// Building upon NewsCubit changes
     return BlocBuilder<NewsCubit, NewsState>(
       builder: (context, state) {
+        /// if data is available
         if (state is SportsGetSuccessState) {
           final List? data = state.data;
           return NewsBody(
             data,
             news: NewsType.sports,
           );
-        } else if (state is SportsGetFailedState) {
+        }
+
+        /// if getting data failed
+        else if (state is SportsGetFailedState) {
           return ErrorDisplay(error: state.error);
-        } else {
+        }
+
+        /// if data is loading
+        else {
           return const CupertinoActivityIndicator();
         }
       },

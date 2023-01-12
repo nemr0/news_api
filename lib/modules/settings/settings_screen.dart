@@ -5,6 +5,7 @@ import 'package:news_api/shared/cubits/brightness_cubit/brightness_cubit.dart';
 
 import '../../shared/triggers/on_my_profile.dart';
 
+/// Settings Screen
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -12,13 +13,14 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          BlocBuilder<ConfigurationCubit, CupertinoThemeData>(
-            builder: (context, state) {
-              return Row(
+      child: BlocBuilder<ConfigurationCubit, CupertinoThemeData>(
+        builder: (context, state) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              /// Dark Mode button
+              Row(
                 children: [
                   Text(
                     'Dark Mode',
@@ -31,79 +33,86 @@ class SettingsScreen extends StatelessWidget {
                   CupertinoSwitch(
                     value: state.brightness == Brightness.dark ? true : false,
                     onChanged: (isDark) async {
-                      debugPrint(
-                          'setTheme success? ${await ConfigurationCubit.get(context).setTheme(isDark)}');
+                      await ConfigurationCubit.get(context)
+                          .setTheme(isDark)
+                          .then((value) => debugPrint('new set isDark:$value'));
                     },
                   ),
                 ],
-              );
-            },
-          ),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-                text: 'This App is Built using efforts of a',
-                style: const TextStyle(
-                    color: CupertinoColors.inactiveGray,
-                    fontWeight: FontWeight.w300,
-                    fontSize: 12),
-                children: [
-                  TextSpan(
-                      text: ' HUMAN ',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: CupertinoColors.activeOrange.withOpacity(.8))),
-                  const TextSpan(text: 'being.\n'),
-                  const TextSpan(text: 'So, please be'),
-                  TextSpan(
-                      text: ' THOUGHTFUL ',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: CupertinoColors.activeOrange.withOpacity(.8))),
-                  const TextSpan(text: 'and'),
-                  TextSpan(
-                      text: ' HELPFUL.',
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: CupertinoColors.activeOrange.withOpacity(.8))),
-                  const TextSpan(
-                    text: '\nby Omar Elnemr',
-                    style: TextStyle(fontSize: 16, color: CupertinoColors.link),
-                  ),
-                ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: SizedBox(
-              height: 40,
-              width: 100,
-              child: CupertinoButton.filled(
-                  padding: EdgeInsets.zero,
-                  onPressed: launchMyProfile,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(
-                        CupertinoIcons.exclamationmark_circle,
-                        size: 22,
-                        color: CupertinoColors.black,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        'visit me?',
+              ),
+
+              /// About Text
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: 'This App is Built using efforts of a',
+                    style: const TextStyle(
+                        color: CupertinoColors.inactiveGray,
+                        fontWeight: FontWeight.w300,
+                        fontSize: 12),
+                    children: [
+                      TextSpan(
+                          text: ' HUMAN ',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: CupertinoColors.activeOrange
+                                  .withOpacity(.8))),
+                      const TextSpan(text: 'being.\n'),
+                      const TextSpan(text: 'So, please be'),
+                      TextSpan(
+                          text: ' THOUGHTFUL ',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: CupertinoColors.activeOrange
+                                  .withOpacity(.8))),
+                      const TextSpan(text: 'and'),
+                      TextSpan(
+                          text: ' HELPFUL.',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: CupertinoColors.activeOrange
+                                  .withOpacity(.8))),
+                      const TextSpan(
+                        text: '\nby Omar Elnemr',
                         style: TextStyle(
-                            fontSize: 16,
-                            color: CupertinoColors.darkBackgroundGray),
+                            fontSize: 16, color: CupertinoColors.link),
                       ),
-                    ],
-                  )),
-            ),
-          ),
-          BlocBuilder<ConfigurationCubit, CupertinoThemeData>(
-            builder: (context, state) {
-              return Container(
+                    ]),
+              ),
+
+              /// Visit me button
+              Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: SizedBox(
+                  height: 40,
+                  width: 100,
+                  child: CupertinoButton.filled(
+                      padding: EdgeInsets.zero,
+                      onPressed: launchMyProfile,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(
+                            CupertinoIcons.exclamationmark_circle,
+                            size: 22,
+                            color: CupertinoColors.black,
+                          ),
+                          SizedBox(
+                            width: 4,
+                          ),
+                          Text(
+                            'visit me?',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: CupertinoColors.darkBackgroundGray),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+
+              /// Built with LOVE Mark
+              Container(
                 padding: const EdgeInsets.all(5),
                 margin: EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * .2,
@@ -135,10 +144,10 @@ class SettingsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              );
-            },
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

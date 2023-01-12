@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../lorem_test.dart';
 import 'error_dialog.dart';
 
+/// Every news item
 class NewsItem extends StatelessWidget {
   const NewsItem(
       {Key? key,

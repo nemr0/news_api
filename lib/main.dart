@@ -9,7 +9,7 @@ import 'package:news_api/shared/cubits/news_cubit/news_cubit.dart';
 import 'custom_bloc_observer.dart';
 import 'layout/home_layout.dart';
 
-// import'';
+/// The Statring point of your flutter app
 Future<void> main() async => {
       await GetStorage.init(),
 // changing bloc observer to a custom one in ./custom_bloc_observer.dart
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: state,
               // Main Page
-              home: const HomeLayout(title: 'News API with BLoC'));
+              home: const HomeLayout());
         }));
   }
 }

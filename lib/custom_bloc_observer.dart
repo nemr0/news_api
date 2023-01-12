@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 
+/// A custom bloc observer to print state
 class CustomBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
